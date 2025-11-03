@@ -1,0 +1,17 @@
+[package]
+name = "datadown-node"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Node-API binding for datadown"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = { version = "3", features = ["napi4"] }
+napi-derive = "3"
+datadown-core = { path = "../../crates/datadown-core", features = ["yaml","toml","xml"] }
+
+[build-dependencies]
+napi-build = "2.2.4"

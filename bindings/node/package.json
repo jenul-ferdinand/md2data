@@ -1,0 +1,15 @@
+{
+    "name": "datadown",
+    "version": "0.1.0",
+    "description": "Markdown → JSON/YAML/TOML/XML. Faster with Rust!",
+    "license": "MIT",
+    "main": "index.js",
+    "scripts": {
+        "build": "napi build --release",
+        "dev": "napi build",
+        "test": "node -e \"const m=require('./index'); console.log(m.convert('# T','json'))\""
+    },
+    "devDependencies": {
+        "@napi-rs/cli": "^3.4.1"
+    }
+}
