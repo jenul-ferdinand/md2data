@@ -4,3 +4,7 @@
 # Packaging
 /bindings/node/node_modules
 /bindings/python/.venv
+
+# Generated bindings
+/bindings/node/index.node
+/bindings/node/index.d.ts
