@@ -30,14 +30,21 @@ pub fn parse_markdown(input: &str) -> Node {
 
             Event::End(tag_end) => {
                 flush_text(&mut stack, &mut text_buf);
-                let node = stack.pop().expect("non-empty stack");
 
+                // Only pop for tags we actually pushed to the stack
                 match tag_end {
-                    TagEnd::Heading { .. } => append_to_heading_text(&mut stack, node),
-                    TagEnd::Paragraph | TagEnd::Item | TagEnd::List(_) | TagEnd::CodeBlock => {
-                        push_child(&mut stack, node)
+                    TagEnd::Heading { .. } => {
+                        let node = stack.pop().expect("heading on stack");
+                        append_to_heading_text(&mut stack, node);
                     }
-                    _ => {}
+                    TagEnd::Paragraph | TagEnd::Item | TagEnd::List(_) | TagEnd::CodeBlock => {
+                        let node = stack.pop().expect("node on stack");
+                        push_child(&mut stack, node);
+                    }
+                    _ => {
+                        // For inline elements (Strong, Emphasis, Link, etc.) that we don't track:
+                        // Don't pop anything - their text content was already flushed to the parent
+                    }
                 }
             }
 
