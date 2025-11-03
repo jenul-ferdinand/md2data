@@ -1,6 +1,6 @@
 # Builds
 /target
 
-# Packages
-/node_modules
-/.venv
+# Packaging
+/bindings/node/node_modules
+/bindings/python/.venv
