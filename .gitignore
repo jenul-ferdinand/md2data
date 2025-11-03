@@ -1,0 +1,6 @@
+# Builds
+/target
+
+# Packages
+/node_modules
+/.venv

@@ -1,0 +1,8 @@
+[workspace]
+members = [
+  "crates/datadown-core",
+  "crates/datadown-cli",
+  "bindings/node",
+  "bindings/python",
+]
+resolver = "2"
