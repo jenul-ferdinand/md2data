@@ -1,0 +1,14 @@
+[package]
+name = "datadown_py"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Markdown → JSON/YAML/TOML/XML. Faster with Rust!"
+
+[lib]
+name = "datadown"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.27.1", features = ["extension-module"] }
+datadown-core = { path = "../../crates/datadown-core", features = ["yaml","toml","xml"] }

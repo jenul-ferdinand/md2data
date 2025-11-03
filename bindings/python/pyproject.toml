@@ -1,0 +1,19 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "datadown"
+version = "0.1.0"
+description = "Markdown → JSON/YAML/TOML/XML. Faster with Rust!"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Jenul Ferdinand", email = "jenul15ferdinand@gmail.comm" }]
+license = { text = "MIT" }
+classifiers = [
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: 3",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+]
