@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "datadown"
 version = "0.1.0"
-description = "Markdown → JSON/YAML/TOML/XML. Faster with Rust!"
+description = "Python binding for Datadown: Markdown → JSON/YAML/TOML/XML. Faster with Rust."
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [{ name = "Jenul Ferdinand", email = "jenul15ferdinand@gmail.comm" }]
