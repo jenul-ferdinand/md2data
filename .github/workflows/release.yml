@@ -1,0 +1,207 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 0.1.0)'
+        required: true
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: get_version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$PREV_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            CHANGELOG=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+
+          cat > changelog.txt << EOF
+          ## What's Changed
+
+          $CHANGELOG
+
+          ## Installation
+
+          Download the appropriate binary for your platform below:
+          - **Windows**: \`datadown-${{ steps.get_version.outputs.version }}-x86_64-pc-windows-msvc.zip\`
+          - **macOS (Intel)**: \`datadown-${{ steps.get_version.outputs.version }}-x86_64-apple-darwin.tar.gz\`
+          - **macOS (Apple Silicon)**: \`datadown-${{ steps.get_version.outputs.version }}-aarch64-apple-darwin.tar.gz\`
+          - **Linux (GNU)**: \`datadown-${{ steps.get_version.outputs.version }}-x86_64-unknown-linux-gnu.tar.gz\`
+          - **Linux (musl/Alpine)**: \`datadown-${{ steps.get_version.outputs.version }}-x86_64-unknown-linux-musl.tar.gz\`
+
+          Extract the binary and add it to your PATH.
+
+          Verify checksums with \`SHA256SUMS.txt\`.
+          EOF
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          cat changelog.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && format('v{0}', inputs.version) || github.ref_name }}
+          target_commitish: ${{ github.sha }}
+          name: v${{ steps.get_version.outputs.version }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: ${{ contains(steps.get_version.outputs.version, '-') }}
+
+  build:
+    name: Build ${{ matrix.target }}
+    needs: create-release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            archive: zip
+
+          - target: x86_64-apple-darwin
+            os: macos-13
+            archive: tar.gz
+
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            archive: tar.gz
+
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            archive: tar.gz
+
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+            archive: tar.gz
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Cache Cargo build
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      - name: Install musl tools (Linux musl only)
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl-tools
+
+      - name: Build release binary
+        run: cargo build --release --target ${{ matrix.target }} --package datadown
+
+      - name: Strip binary (Unix)
+        if: matrix.os != 'windows-latest'
+        run: |
+          strip target/${{ matrix.target }}/release/datadown
+
+      - name: Create archive
+        id: archive
+        shell: bash
+        run: |
+          VERSION="${{ needs.create-release.outputs.version }}"
+          TARGET="${{ matrix.target }}"
+          ARCHIVE_NAME="datadown-${VERSION}-${TARGET}"
+
+          mkdir -p "${ARCHIVE_NAME}"
+
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            cp "target/${TARGET}/release/datadown.exe" "${ARCHIVE_NAME}/"
+            7z a "${ARCHIVE_NAME}.zip" "${ARCHIVE_NAME}"
+            echo "asset=${ARCHIVE_NAME}.zip" >> $GITHUB_OUTPUT
+            echo "asset_name=${ARCHIVE_NAME}.zip" >> $GITHUB_OUTPUT
+          else
+            cp "target/${TARGET}/release/datadown" "${ARCHIVE_NAME}/"
+            tar czf "${ARCHIVE_NAME}.tar.gz" "${ARCHIVE_NAME}"
+            echo "asset=${ARCHIVE_NAME}.tar.gz" >> $GITHUB_OUTPUT
+            echo "asset_name=${ARCHIVE_NAME}.tar.gz" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate checksum
+        shell: bash
+        run: |
+          ASSET="${{ steps.archive.outputs.asset }}"
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            # Extract only the hex line, remove spaces, and include filename to match shasum format
+            HASH=$(certutil -hashfile "$ASSET" SHA256 | tr -d '\r' | awk '/^[0-9A-Fa-f ]+$/ { gsub(" ",""); print; exit }')
+            echo "$HASH  $ASSET" > "$ASSET.sha256"
+          else
+            shasum -a 256 "$ASSET" > "$ASSET.sha256"
+          fi
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.create-release.outputs.version }}
+          files: |
+            ${{ steps.archive.outputs.asset }}
+            ${{ steps.archive.outputs.asset }}.sha256
+
+  publish-crate:
+    name: Publish to crates.io
+    needs: [create-release, build]
+    runs-on: ubuntu-latest
+    if: ${{ !contains(needs.create-release.outputs.version, '-') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Publish datadown
+        run: |
+          cd crates/datadown
+          cargo publish --token ${{ secrets.CARGO_TOKEN }} || echo "Already published or error"
+        continue-on-error: true
