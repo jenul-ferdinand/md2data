@@ -1,12 +1,12 @@
 [package]
 name = "datadown_py"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 license = "MIT"
-description = "Markdown → JSON/YAML/TOML/XML. Faster with Rust!"
+description = "Python binding for Datadown: Markdown → JSON/YAML/TOML/XML. Faster with Rust."
 
 [lib]
-name = "datadown"
+name = "datadown_py"
 crate-type = ["cdylib"]
 
 [dependencies]
