@@ -17,3 +17,7 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
   "Operating System :: MacOS",
 ]
+
+[tool.maturin]
+module-name = "datadown"
+strip = true
