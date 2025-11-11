@@ -3,8 +3,12 @@ use std::{fs, io::{self, Read}};
 use datadown_core::{convert_str, OutputFormat};
 
 #[derive(Clone, ValueEnum)]
-enum Format { Json, Yaml, Toml, Xml }
-
+enum Format { 
+    Json, 
+    Yaml, 
+    Toml, 
+    Xml,
+}
 impl From<Format> for OutputFormat {
     fn from(f: Format) -> Self {
         match f {
