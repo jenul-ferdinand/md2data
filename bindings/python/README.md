@@ -1,8 +1,25 @@
-# datadown (Python binding)
+# Datadown for Python 📦🐍 
+> Markdown → JSON/YAML/TOML/XML. Faster with Rust.
 
-Rust-powered Markdown → JSON/YAML/TOML/XML.
+## Installation
+Install with pip
+```bash
+pip install datadown
+```
 
+## Usage
 ```python
 import datadown
-print(datadown.convert("# Title", "json"))
+
+md = """# Hello World
+
+This is a **markdown** document."""
+
+json = datadown.convert(md, "json")
+yaml = datadown.convert(md, "yaml")
+toml = datadown.convert(md, "toml")
+xml = datadown.convert(md, "xml")
 ```
+
+## Developers: Building the wheel
+The build process can be initiated with `uv build`. A dist folder will be created.
