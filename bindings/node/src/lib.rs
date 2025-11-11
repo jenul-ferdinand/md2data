@@ -1,6 +1,6 @@
 use napi::bindgen_prelude::*;
 use napi_derive::napi;
-use datadown_core::{convert_str, OutputFormat};
+use datadown::{convert_str, OutputFormat};
 
 #[napi]
 pub fn convert(input: String, format: String) -> Result<String> {

@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use datadown_core::{convert_str, OutputFormat};
+use ::datadown::{convert_str, OutputFormat};
 
 #[pyfunction]
 fn convert(input: &str, format: &str) -> PyResult<String> {

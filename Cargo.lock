@@ -165,13 +165,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
- "datadown-core",
-]
-
-[[package]]
-name = "datadown-core"
-version = "0.1.0"
-dependencies = [
  "insta",
  "pretty_assertions",
  "pulldown-cmark",
@@ -187,7 +180,7 @@ dependencies = [
 name = "datadown_node"
 version = "0.1.0"
 dependencies = [
- "datadown-core",
+ "datadown",
  "napi",
  "napi-build",
  "napi-derive",
@@ -197,7 +190,7 @@ dependencies = [
 name = "datadown_py"
 version = "0.1.0"
 dependencies = [
- "datadown-core",
+ "datadown",
  "pyo3",
 ]
 

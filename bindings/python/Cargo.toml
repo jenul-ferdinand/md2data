@@ -11,4 +11,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = { version = "0.27.1", features = ["extension-module"] }
-datadown-core = { path = "../../crates/datadown-core", features = ["yaml","toml","xml"] }
+datadown = { path = "../../crates/datadown", features = ["yaml","toml","xml"] }

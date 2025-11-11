@@ -1,7 +1,6 @@
 [workspace]
 members = [
-  "crates/datadown-core",
-  "crates/datadown-cli",
+  "crates/datadown",
   "bindings/node",
   "bindings/python",
 ]

@@ -1,0 +1,42 @@
+[package]
+name = "datadown"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "CLI and library for converting Markdown → JSON/YAML/TOML/XML"
+repository = "https://github.com/YOUR_USERNAME/datadown"
+keywords = ["markdown", "parser", "json", "yaml", "cli"]
+categories = ["command-line-utilities", "parsing", "text-processing"]
+
+[lib]
+name = "datadown"
+path = "src/lib.rs"
+
+[[bin]]
+name = "datadown"
+path = "src/main.rs"
+
+[features]
+default = ["json"]
+json = []
+yaml = ["dep:serde_yaml"]
+toml = ["dep:toml"]
+xml  = ["dep:quick-xml"]
+
+[dependencies]
+# Core library dependencies
+serde = { version = "1", features = ["derive"] }
+thiserror = "2.0.17"
+pulldown-cmark = "0.13.0"
+serde_json = "1"
+serde_yaml = { version = "0.9.34-deprecated", optional = true }
+toml = { version = "0.9.8", optional = true }
+quick-xml = { version = "0.38.3", features = ["serialize"], optional = true }
+
+# CLI dependencies
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+
+[dev-dependencies]
+insta = "1.35"  # Snapshot testing
+pretty_assertions = "1.4"  # Better assertion output

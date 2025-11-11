@@ -11,7 +11,7 @@ crate-type = ["cdylib"]
 [dependencies]
 napi = { version = "3", features = ["napi4"] }
 napi-derive = "3"
-datadown-core = { path = "../../crates/datadown-core", features = ["yaml","toml","xml"] }
+datadown = { path = "../../crates/datadown", features = ["yaml","toml","xml"] }
 
 [build-dependencies]
 napi-build = "2.2.4"
