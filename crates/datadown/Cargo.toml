@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 license = "MIT"
 description = "CLI and library for converting Markdown → JSON/YAML/TOML/XML"
-repository = "https://github.com/YOUR_USERNAME/datadown"
+repository = "https://github.com/jenul-ferdinand/datadown"
 keywords = ["markdown", "parser", "json", "yaml", "cli"]
 categories = ["command-line-utilities", "parsing", "text-processing"]
 
