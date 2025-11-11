@@ -184,7 +184,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "datadown-node"
+name = "datadown_node"
 version = "0.1.0"
 dependencies = [
  "datadown-core",
