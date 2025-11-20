@@ -4,6 +4,7 @@ mod parse;
 use thiserror::Error;
 
 pub use ast::Node;
+pub use ast::NodeOrString;
 pub use parse::parse_markdown;
 
 #[derive(Debug, Clone, Copy)]
