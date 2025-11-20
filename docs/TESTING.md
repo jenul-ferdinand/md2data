@@ -1,0 +1,1 @@
+To test the parser run `cargo test --test parser`
