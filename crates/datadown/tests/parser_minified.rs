@@ -158,6 +158,8 @@ Kept Text
 #[test]
 fn test_minified_nested_list_items() {
     // Test nested lists within lists (Array of Arrays)
+    // When a list item has both text and a nested list, both are preserved
+    // and flattened into the parent array
     let md = r#"
 # Matrix
 * Row 1
@@ -168,20 +170,25 @@ fn test_minified_nested_list_items() {
 "#;
     let ast = parse_markdown_minified(md);
     let root_map = unwrap_map(&ast);
-    
+
     assert_eq!(root_map[0].0, "Matrix");
     let matrix = unwrap_array(&root_map[0].1);
-    
-    // Item 1 should be an Array (the nested list)
-    // Note: In our implementation, if an item has a nested list, 
-    // the item becomes that list. The text "Row 1" is currently discarded 
-    // or needs specific handling in parse_recursive_list if we want to keep it.
-    // Based on current impl, it effectively becomes [ ["Col 1", "Col 2"], ["Col 3"] ]
-    
-    let row1 = unwrap_array(&matrix[0]);
-    assert_eq!(unwrap_string(&row1[0]), "Col 1");
-    assert_eq!(unwrap_string(&row1[1]), "Col 2");
-    
-    let row2 = unwrap_array(&matrix[1]);
-    assert_eq!(unwrap_string(&row2[0]), "Col 3");
+
+    // Structure: [String("Row 1"), Array([...]), String("Row 2"), Array([...])]
+    assert_eq!(matrix.len(), 4);
+
+    // matrix[0] = "Row 1"
+    assert_eq!(unwrap_string(&matrix[0]), "Row 1");
+
+    // matrix[1] = Array with Col 1, Col 2
+    let row1_nested = unwrap_array(&matrix[1]);
+    assert_eq!(unwrap_string(&row1_nested[0]), "Col 1");
+    assert_eq!(unwrap_string(&row1_nested[1]), "Col 2");
+
+    // matrix[2] = "Row 2"
+    assert_eq!(unwrap_string(&matrix[2]), "Row 2");
+
+    // matrix[3] = Array with Col 3
+    let row2_nested = unwrap_array(&matrix[3]);
+    assert_eq!(unwrap_string(&row2_nested[0]), "Col 3");
 }
