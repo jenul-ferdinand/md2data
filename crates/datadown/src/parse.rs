@@ -30,7 +30,8 @@ pub fn parse_markdown(input: &str) -> Node {
                     Tag::List(start) => {
                         let ordered = start.is_some(); // Some(n) => ordered list starting at n; None => unordered
                         stack.push(Node::List { 
-                            ordered, items: vec![] 
+                            ordered, 
+                            items: vec![],
                         })
                     }
                     Tag::Item => { 
@@ -42,7 +43,7 @@ pub fn parse_markdown(input: &str) -> Node {
                         // pulldown-cmark 0.10 changed fenced info representation; keep it simple for now.
                         stack.push(Node::CodeBlock { 
                             info: None, 
-                            content: String::new() 
+                            content: String::new(),
                         })
                     }
                     _ => {}
@@ -83,7 +84,7 @@ pub fn parse_markdown(input: &str) -> Node {
 }
 
 /// Moves accumulated text from the buffer to the current node
-fn flush_text(stack: &mut Vec<Node>, buf: &mut String) {
+fn flush_text(stack: &mut [Node], buf: &mut String) {
     if buf.is_empty() { return; }
 
     let text = buf.clone();
@@ -106,7 +107,7 @@ fn flush_text(stack: &mut Vec<Node>, buf: &mut String) {
 }
 
 /// Adds a completed child node to its parent container
-fn push_node_to_parent(stack: &mut Vec<Node>, node: Node) {
+fn push_node_to_parent(stack: &mut [Node], node: Node) {
     if let Some(parent) = stack.last_mut() {
         match parent {
             // Standard containers take NodeOrString
