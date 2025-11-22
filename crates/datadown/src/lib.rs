@@ -32,8 +32,8 @@ impl OutputFormat {
 
 #[derive(Debug, Clone, Copy, Default)]
 pub enum ParsingMode {
-    #[default]
     Document,
+    #[default]
     Minified,
 }
 

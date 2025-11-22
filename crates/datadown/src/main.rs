@@ -34,9 +34,9 @@ struct Args {
     #[arg(short, long)]
     out: Option<String>,
 
-    /// Use minified/config mode
-    #[arg(short = 'm', long)]
-    minified: bool,
+    /// Use structured/document mode (default is minified)
+    #[arg(short = 's', long)]
+    structured: bool,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -50,11 +50,11 @@ fn main() -> anyhow::Result<()> {
         fs::read_to_string(&args.input)?
     };
 
-    // Select mode based on fl
-    let mode = if args.minified {
-        ParsingMode::Minified
-    } else {
+    // Select mode: default is Minified, use --structured for Document mode
+    let mode = if args.structured {
         ParsingMode::Document
+    } else {
+        ParsingMode::Minified
     };
 
     let out = convert_str(&md, args.format.into(), mode)
