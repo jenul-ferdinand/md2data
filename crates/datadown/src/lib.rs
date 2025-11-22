@@ -1,6 +1,7 @@
 mod ast;
 mod parse;
 mod parse_minified;
+mod sanitizers;
 
 use thiserror::Error;
 use serde::Serialize;
@@ -8,6 +9,7 @@ use serde::Serialize;
 pub use ast::{Node, NodeOrString, MinifiedNode};
 pub use parse::parse_markdown;
 pub use parse_minified::parse_markdown_minified;
+pub use sanitizers::sanitize_keys;
 
 #[derive(Debug, Clone, Copy)]
 pub enum OutputFormat { 
@@ -43,6 +45,10 @@ pub enum ConvertError {
     Ser(String),
 }
 
+#[derive(Serialize)]
+#[serde(rename = "Document")]
+struct XmlRoot<'a>(&'a MinifiedNode);
+
 pub fn convert_str(input: &str, fmt: OutputFormat, mode: ParsingMode) -> Result<String, ConvertError> {
     match mode {
         ParsingMode::Document => {
@@ -50,7 +56,18 @@ pub fn convert_str(input: &str, fmt: OutputFormat, mode: ParsingMode) -> Result<
             serialize_ast(&ast, fmt)
         },
         ParsingMode::Minified => {
-            let ast = parse_markdown_minified(input);
+            let mut ast = parse_markdown_minified(input);
+
+            if let OutputFormat::Xml = fmt {
+                // Sanitize XML keys
+                ast = sanitize_keys(ast);
+
+                // Add root <Document></Document> wrapper so XML conversion works
+                let wrapper = XmlRoot(&ast);
+                return quick_xml::se::to_string(&wrapper)
+                    .map_err(|e| ConvertError::Ser(e.to_string()));
+            }
+
             serialize_ast(&ast, fmt)
         },
     }
