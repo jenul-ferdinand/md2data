@@ -1,15 +1,14 @@
-# Datadown
+# Markdown &rarr; Structured Data
 
-> The fastest Markdown &rarr; structured data converter with support for JSON, YAML, TOML, and XML output formats.
-
-Datadown is a high-performance tool that parses Markdown documents and converts them into structured data formats. Built with Rust for maximum speed and reliability, bindings for Node.js, Python provided with a standalone CLI.
+## Description
+A high-performance tool that parses Markdown documents and converts them into structured data formats i.e., JSON/YAML/XML/TOML. Built with Rust for maximum speed and reliability, bindings for Node.js, Python provided with a standalone CLI.
 
 ## Features
 
 - **Multiple Output Formats**: Convert Markdown to JSON, YAML, TOML, or XML
 - **Cross-Platform**: Available as a Rust CLI, Node.js package, and Python package
 - **High Performance**: Written in Rust with zero-cost abstractions
-- **Simple API**: Easy-to-use interface across all platforms
+- **Simple API**: Easy-to-use interface across Python, Node.js and Rust
 - **Structured AST**: Generates a clean Abstract Syntax Tree representation of your Markdown
 
 ## Installation
