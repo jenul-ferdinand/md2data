@@ -1,11 +1,13 @@
 mod ast;
 mod parse;
+mod parse_minified;
 
 use thiserror::Error;
+use serde::Serialize;
 
-pub use ast::Node;
-pub use ast::NodeOrString;
+pub use ast::{Node, NodeOrString, MinifiedNode};
 pub use parse::parse_markdown;
+pub use parse_minified::parse_markdown_minified;
 
 #[derive(Debug, Clone, Copy)]
 pub enum OutputFormat { 
@@ -26,6 +28,13 @@ impl OutputFormat {
     }
 }
 
+#[derive(Debug, Clone, Copy, Default)]
+pub enum ParsingMode {
+    #[default]
+    Document,
+    Minified,
+}
+
 #[derive(Debug, Error)]
 pub enum ConvertError {
     #[error("unsupported format")]
@@ -34,9 +43,20 @@ pub enum ConvertError {
     Ser(String),
 }
 
-pub fn convert_str(input: &str, fmt: OutputFormat) -> Result<String, ConvertError> {
-    let ast = parse_markdown(input);
+pub fn convert_str(input: &str, fmt: OutputFormat, mode: ParsingMode) -> Result<String, ConvertError> {
+    match mode {
+        ParsingMode::Document => {
+            let ast = parse_markdown(input);
+            serialize_ast(&ast, fmt)
+        },
+        ParsingMode::Minified => {
+            let ast = parse_markdown_minified(input);
+            serialize_ast(&ast, fmt)
+        },
+    }
+}
 
+fn serialize_ast<T: Serialize>(ast: &T, fmt: OutputFormat) -> Result<String, ConvertError> {
     match fmt {
         OutputFormat::Json => serde_json::to_string_pretty(&ast)
             .map_err(|e| ConvertError::Ser(e.to_string())),
