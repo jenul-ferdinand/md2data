@@ -9,15 +9,15 @@ uv build # Builds using maturin
 
 This will create `bindings/python/dist` with:
 
-1. `datadown-(version)-cp314-win_amd64.whl` 
+1. `md2data-(version)-cp314-win_amd64.whl` 
     - **What it is:** A Python wheel - the standard distributable format for Python packages.
     - **Contains:**
-        - `datadown.py.cp314-win_amd64.pyd` - The compiled Rust code as a Python extension.
+        - `md2data.py.cp314-win_amd64.pyd` - The compiled Rust code as a Python extension.
         - `__init__.py` - Python glue code to import the extension.
         - `METADATA` - Package information.
-    - **Purpose:** Install with `pip install datadown-0.1.0-cp314-cp314-win_amd64.whl`
+    - **Purpose:** Install with `pip install md2data-0.1.0-cp314-cp314-win_amd64.whl`
 
-2. `datadown-(version).tar.gz`
+2. `md2data-(version).tar.gz`
     - **What it is:** A source distribution (sdist).
     - **Contains:** Source code that can be compiled on other platforms.
     - **Purpose:** For platforms where pre-built wheels aren't available.

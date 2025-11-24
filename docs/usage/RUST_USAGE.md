@@ -7,42 +7,42 @@ This document outlines all usage examples for Rust development and production.
 ### Installation
 ```bash
 # Install from local source
-cargo install --path crates/datadown
+cargo install --path crates/md2data
 
 # Install from crates.io (after publishing)
-cargo install datadown
+cargo install md2data
 ```
 
 ### Command-Line Usage
 ```bash
 # From a file → stdout (JSON default)
-datadown input.md
+md2data input.md
 
 # From a file → specific format
-datadown input.md --format yaml
-datadown input.md -f toml
-datadown input.md -f xml
+md2data input.md --format yaml
+md2data input.md -f toml
+md2data input.md -f xml
 
 # From stdin
-echo "# Hello World" | datadown -
-cat README.md | datadown - --format json
+echo "# Hello World" | md2data -
+cat README.md | md2data - --format json
 
 # To output file
-datadown input.md --format yaml --out output.yaml
-datadown input.md -f json -o output.json
+md2data input.md --format yaml --out output.yaml
+md2data input.md -f json -o output.json
 
 # Show version
-datadown --version
+md2data --version
 
 # Show help
-datadown --help
+md2data --help
 ```
 
 ### Development (without installing):
 ```bash
 # Run directly from source
-cargo run --package datadown -- input.md --format json
-echo "# Test" | cargo run --package datadown -- - -f yaml
+cargo run --package md2data -- input.md --format json
+echo "# Test" | cargo run --package md2data -- - -f yaml
 ```
 
 ---
@@ -53,18 +53,18 @@ echo "# Test" | cargo run --package datadown -- - -f yaml
 ```toml
 # Cargo.toml
 [dependencies]
-datadown = "0.1.0"
+md2data = "0.1.0"
 
 # With all format features
-datadown = { version = "0.1.0", features = ["yaml", "toml", "xml"] }
+md2data = { version = "0.1.0", features = ["yaml", "toml", "xml"] }
 
 # Only specific formats
-datadown = { version = "0.1.0", features = ["yaml"] }
+md2data = { version = "0.1.0", features = ["yaml"] }
 ```
 
 ### Library Usage - High-Level API
 ```rust
-use datadown::{convert_str, OutputFormat};
+use md2data::{convert_str, OutputFormat};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let markdown = "# Hello World\n\nThis is **bold** text.";
@@ -91,7 +91,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ### Library Usage - Low-Level API (Working with AST)
 ```rust
-use datadown::{parse_markdown, Node};
+use md2data::{parse_markdown, Node};
 
 fn main() {
     let markdown = "# Title\n\nParagraph with *italic*.";
@@ -126,7 +126,7 @@ fn main() {
 
 Using OutputFormat from String
 
-use datadown::{convert_str, OutputFormat};
+use md2data::{convert_str, OutputFormat};
 
 fn convert_with_string_format(md: &str, format: &str) -> String {
     let fmt = OutputFormat::from_str(format)

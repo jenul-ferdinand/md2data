@@ -1,15 +1,15 @@
-# Datadown for Node.js 📦🟢
+# md2data for Node.js 📦🟢
 > Markdown → JSON/YAML/TOML/XML. Faster with Rust.
 
 ## Installation
 Install with npm.
 ```bash
-npm install datadown
+npm install md2data
 ```
 
 ## Usage
 ```js
-const { convert } = require('datadown');
+const { convert } = require('md2data');
 
 const markdown = `# Hello World
 

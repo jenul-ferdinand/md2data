@@ -1,6 +1,6 @@
-use datadown::parse_markdown;
-use datadown::Node;
-use datadown::NodeOrString;
+use md2data::parse_markdown;
+use md2data::Node;
+use md2data::NodeOrString;
 use pretty_assertions::assert_eq;
 
 fn unwrap_node(ns: &NodeOrString) -> &Node {

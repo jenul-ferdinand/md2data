@@ -160,41 +160,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "52560adf09603e58c9a7ee1fe1dcb95a16927b17c127f0ac02d6e768a0e25bc1"
 
 [[package]]
-name = "datadown"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "clap",
- "insta",
- "pretty_assertions",
- "pulldown-cmark",
- "quick-xml",
- "serde",
- "serde_json",
- "serde_yaml",
- "thiserror",
- "toml",
-]
-
-[[package]]
-name = "datadown_node"
-version = "0.1.0"
-dependencies = [
- "datadown",
- "napi",
- "napi-build",
- "napi-derive",
-]
-
-[[package]]
-name = "datadown_py"
-version = "0.1.0"
-dependencies = [
- "datadown",
- "pyo3",
-]
-
-[[package]]
 name = "diff"
 version = "0.1.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -304,6 +269,41 @@ checksum = "d7c4b02199fee7c5d21a5ae7d8cfa79a6ef5bb2fc834d6e9058e89c825efdc55"
 dependencies = [
  "cfg-if",
  "windows-link",
+]
+
+[[package]]
+name = "md2data"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "insta",
+ "pretty_assertions",
+ "pulldown-cmark",
+ "quick-xml",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "thiserror",
+ "toml",
+]
+
+[[package]]
+name = "md2data_node"
+version = "0.1.0"
+dependencies = [
+ "md2data",
+ "napi",
+ "napi-build",
+ "napi-derive",
+]
+
+[[package]]
+name = "md2data_py"
+version = "0.1.0"
+dependencies = [
+ "md2data",
+ "pyo3",
 ]
 
 [[package]]

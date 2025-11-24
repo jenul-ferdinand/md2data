@@ -1,19 +1,19 @@
 [package]
-name = "datadown"
+name = "md2data"
 version = "0.1.0"
 edition = "2024"
 license = "MIT"
 description = "CLI and library for converting Markdown → JSON/YAML/TOML/XML"
-repository = "https://github.com/jenul-ferdinand/datadown"
+repository = "https://github.com/jenul-ferdinand/md2data"
 keywords = ["markdown", "parser", "json", "yaml", "cli"]
 categories = ["command-line-utilities", "parsing", "text-processing"]
 
 [lib]
-name = "datadown"
+name = "md2data"
 path = "src/lib.rs"
 
 [[bin]]
-name = "datadown"
+name = "md2data"
 path = "src/main.rs"
 
 [features]

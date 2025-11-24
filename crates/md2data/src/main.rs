@@ -1,6 +1,6 @@
 use clap::{Parser, ValueEnum};
 use std::{fs, io::{self, Read}};
-use datadown::{convert_str, OutputFormat, ParsingMode};
+use md2data::{convert_str, OutputFormat, ParsingMode};
 
 #[derive(Clone, ValueEnum)]
 enum Format { 

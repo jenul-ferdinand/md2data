@@ -11,13 +11,13 @@ npm install
 npm link
 
 # Install from npm (after publishing)
-npm install datadown
+npm install md2data
 ```
 
 ## JavaScript (CommonJS) Usage
 
 ```js
-const { convert } = require('datadown');
+const { convert } = require('md2data');
 
 // Basic conversion
 const markdown = "# Hello World\n\nThis is **bold** text.";
@@ -45,7 +45,7 @@ console.log(convert("# Quick Test", "json"));
 ## TypeScript (ESM) Usage
 
 ```ts
-import { convert } from 'datadown';
+import { convert } from 'md2data';
 
 const markdown: string = "# Hello World\n\nThis is **bold** text.";
 
@@ -65,7 +65,7 @@ const result = convertMarkdown("# Test", "json");
 
 ```js
 const fs = require('fs');
-const { convert } = require('datadown');
+const { convert } = require('md2data');
 
 // Read Markdown file
 const markdown = fs.readFileSync('README.md', 'utf-8');
@@ -82,7 +82,7 @@ console.log('Conversion complete!');
 
 ```js
 const fs = require('fs').promises;
-const { convert } = require('datadown');
+const { convert } = require('md2data');
 
 async function convertFile(inputPath, outputPath, format) {
     try {
@@ -109,7 +109,7 @@ convertFile('input.md', 'output.json', 'json');
 
 ```js
 const fs = require('fs');
-const { convert } = require('datadown');
+const { convert } = require('md2data');
 
 // Read entire file first (since convert needs full input)
 let chunks = [];
@@ -129,7 +129,7 @@ fs.createReadStream('large-file.md', 'utf-8')
 
 ```js
 const express = require('express');
-const { convert } = require('datadown');
+const { convert } = require('md2data');
 
 const app = express();
 app.use(express.text({ type: 'text/markdown' }));
@@ -156,7 +156,7 @@ app.post('/convert', (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log('Datadown API running on http://localhost:3000');
+    console.log('MD2Data API running on http://localhost:3000');
 });
 
 // Usage:

@@ -1,24 +1,24 @@
-# Datadown for Python 📦🐍 
+# md2data for Python 📦🐍 
 > Markdown → JSON/YAML/TOML/XML. Faster with Rust.
 
 ## Installation
 Install with pip
 ```bash
-pip install datadown
+pip install md2data
 ```
 
 ## Usage
 ```python
-import datadown
+import md2daa
 
 md = """# Hello World
 
 This is a **markdown** document."""
 
-json = datadown.convert(md, "json")
-yaml = datadown.convert(md, "yaml")
-toml = datadown.convert(md, "toml")
-xml = datadown.convert(md, "xml")
+json = md2data.convert(md, "json")
+yaml = md2data.convert(md, "yaml")
+toml = md2data.convert(md, "toml")
+xml = md2data.convert(md, "xml")
 ```
 
 ## Developers: Building the wheel

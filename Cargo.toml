@@ -1,6 +1,6 @@
 [workspace]
 members = [
-  "crates/datadown",
+  "crates/md2data",
   "bindings/node",
   "bindings/python",
 ]

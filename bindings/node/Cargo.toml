@@ -1,9 +1,9 @@
 [package]
-name = "datadown_node"
+name = "md2data_node"
 version = "0.1.0"
 edition = "2024"
 license = "MIT"
-description = "Node binding for Datadown: Markdown → JSON/YAML/TOML/XML. Faster with Rust."
+description = "Node binding for md2data: Markdown → JSON/YAML/TOML/XML. Faster with Rust."
 publish = false
 
 [lib]
@@ -12,7 +12,7 @@ crate-type = ["cdylib"]
 [dependencies]
 napi = { version = "3", features = ["napi4"] }
 napi-derive = "3"
-datadown = { path = "../../crates/datadown", features = ["yaml","toml","xml"] }
+md2data = { path = "../../crates/md2data", features = ["yaml","toml","xml"] }
 
 [build-dependencies]
 napi-build = "2.2.4"

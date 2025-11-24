@@ -1,6 +1,6 @@
 # Release Process
 
-This document describes how to create a new release of Datadown.
+This document describes how to create a new release of md2data.
 
 ## Overview
 
@@ -12,9 +12,9 @@ Releases are **tag-based** and fully automated via GitHub Actions. When you push
 
 ## Package Structure
 
-The project uses a **single unified crate** called `datadown` that provides both:
-- **Library API**: Rust developers can add `datadown = "0.1.0"` to use the parsing and conversion functions
-- **CLI Binary**: Users can install with `cargo install datadown` to get the command-line tool
+The project uses a **single unified crate** called `md2data` that provides both:
+- **Library API**: Rust developers can add `md2data = "0.1.0"` to use the parsing and conversion functions
+- **CLI Binary**: Users can install with `cargo install md2data` to get the command-line tool
 
 This approach keeps the library and CLI in sync with a single version number and simplifies the release process.
 
@@ -26,7 +26,7 @@ This approach keeps the library and CLI in sync with a single version number and
 
 ```bash
 # Update version in these files to match (e.g., 0.2.0):
-crates/datadown/Cargo.toml        # Main package (CLI + library)
+crates/md2data/Cargo.toml        # Main package (CLI + library)
 bindings/python/Cargo.toml         # Python bindings
 bindings/node/Cargo.toml           # Node.js bindings
 
@@ -73,27 +73,27 @@ git push origin v0.2.0
 After the workflow completes:
 
 1. **Check binaries exist** for all platforms:
-   - `datadown-{version}-x86_64-pc-windows-msvc.zip`
-   - `datadown-{version}-x86_64-apple-darwin.tar.gz`
-   - `datadown-{version}-aarch64-apple-darwin.tar.gz`
-   - `datadown-{version}-x86_64-unknown-linux-gnu.tar.gz`
-   - `datadown-{version}-x86_64-unknown-linux-musl.tar.gz`
+   - `md2data-{version}-x86_64-pc-windows-msvc.zip`
+   - `md2data-{version}-x86_64-apple-darwin.tar.gz`
+   - `md2data-{version}-aarch64-apple-darwin.tar.gz`
+   - `md2data-{version}-x86_64-unknown-linux-gnu.tar.gz`
+   - `md2data-{version}-x86_64-unknown-linux-musl.tar.gz`
 
 2. **Download and test** one binary:
    ```bash
    # Example for macOS:
-   wget https://github.com/USERNAME/datadown/releases/download/v0.2.0/datadown-0.2.0-x86_64-apple-darwin.tar.gz
-   tar xzf datadown-0.2.0-x86_64-apple-darwin.tar.gz
-   ./datadown-0.2.0-x86_64-apple-darwin/datadown --version
+   wget https://github.com/USERNAME/md2data/releases/download/v0.2.0/md2data-0.2.0-x86_64-apple-darwin.tar.gz
+   tar xzf md2data-0.2.0-x86_64-apple-darwin.tar.gz
+   ./md2data-0.2.0-x86_64-apple-darwin/md2data --version
    ```
 
 3. **Verify checksums**:
    ```bash
    # Download checksum file
-   wget https://github.com/USERNAME/datadown/releases/download/v0.2.0/datadown-0.2.0-x86_64-apple-darwin.tar.gz.sha256
+   wget https://github.com/USERNAME/md2data/releases/download/v0.2.0/md2data-0.2.0-x86_64-apple-darwin.tar.gz.sha256
 
    # Verify (macOS/Linux)
-   shasum -a 256 -c datadown-0.2.0-x86_64-apple-darwin.tar.gz.sha256
+   shasum -a 256 -c md2data-0.2.0-x86_64-apple-darwin.tar.gz.sha256
    ```
 
 ## Semantic Versioning
@@ -163,12 +163,12 @@ The workflow includes optional crates.io publishing, but it requires:
 
 2. Ensure you're a crate owner:
    ```bash
-   cargo owner --add YOUR_USERNAME datadown
+   cargo owner --add YOUR_USERNAME md2data
    ```
 
 If publishing fails, releases still succeed (it's marked as `continue-on-error`).
 
-> **Note:** The `datadown` crate includes both the library and CLI binary. Users can install it with `cargo install datadown` (CLI) or add it as a dependency in their `Cargo.toml` (library).
+> **Note:** The `md2data` crate includes both the library and CLI binary. Users can install it with `cargo install md2data` (CLI) or add it as a dependency in their `Cargo.toml` (library).
 
 ## Release Checklist
 
@@ -176,7 +176,7 @@ Before creating a release:
 
 - [ ] All tests pass locally (`cargo test --workspace`)
 - [ ] All changes are committed and pushed
-- [ ] Version updated in `crates/datadown/Cargo.toml`
+- [ ] Version updated in `crates/md2data/Cargo.toml`
 - [ ] Version numbers match in bindings (`bindings/python/Cargo.toml`, `bindings/node/Cargo.toml`)
 - [ ] Python/Node package files updated (`pyproject.toml`, `package.json`)
 - [ ] CHANGELOG or commit messages are clear

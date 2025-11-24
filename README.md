@@ -17,21 +17,21 @@ A high-performance tool that parses Markdown documents and converts them into st
 
 ```bash
 # Build from source
-git clone https://github.com/yourusername/datadown.git
-cd datadown
+git clone https://github.com/yourusername/md2data.git
+cd md2data
 cargo build --release
 ```
 
 ### Node.js
 
 ```bash
-npm install datadown
+npm install md2data
 ```
 
 ### Python
 
 ```bash
-pip install datadown
+pip install md2data
 ```
 
 ## Usage
@@ -40,24 +40,24 @@ pip install datadown
 
 ```bash
 # Convert to JSON (default)
-datadown input.md
+md2data input.md
 
 # Specify output format
-datadown input.md --format yaml
-datadown input.md --format toml
-datadown input.md --format xml
+md2data input.md --format yaml
+md2data input.md --format toml
+md2data input.md --format xml
 
 # Read from stdin
-echo "# Hello World" | datadown - --format json
+echo "# Hello World" | md2data - --format json
 
 # Output to file
-datadown input.md --format json -o output.json
+md2data input.md --format json -o output.json
 ```
 
 ### Node.js
 
 ```javascript
-const { convert } = require('datadown');
+const { convert } = require('md2data');
 
 const markdown = `
 # Hello World
@@ -76,7 +76,7 @@ console.log(json);
 ### Python
 
 ```python
-from datadown import convert
+from md2data import convert
 
 markdown = """
 # Hello World
@@ -98,7 +98,7 @@ print(json_output)
 
 ## How It Works
 
-Datadown uses a three-layer architecture:
+md2data uses a three-layer architecture:
 
 ```
 Markdown (input)
@@ -114,8 +114,7 @@ Serializer (AST → JSON/YAML/TOML/XML)
 
 ### Architecture
 
-- **Core Library** (`datadown-core`): Rust library with parsing and serialization logic
-- **CLI Tool** (`datadown-cli`): Command-line interface using `clap`
+- **Core Library** (`md2data`): Rust library with parsing and serialization logic
 - **Node.js Binding**: Native addon built with `napi-rs`
 - **Python Binding**: Native extension built with `PyO3` and `maturin`
 
@@ -199,8 +198,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/datadown.git
-cd datadown
+git clone https://github.com/yourusername/md2data.git
+cd md2data
 
 # Build all components
 cargo build

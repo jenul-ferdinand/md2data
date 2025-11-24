@@ -1,4 +1,4 @@
-use datadown::{parse_markdown_minified, MinifiedNode};
+use md2data::{parse_markdown_minified, MinifiedNode};
 use pretty_assertions::assert_eq;
 
 // Helper to extract string value for easier assertions
@@ -29,7 +29,7 @@ fn unwrap_map(node: &MinifiedNode) -> &Vec<(String, MinifiedNode)> {
 fn test_minified_flat_key_value() {
     let md = r#"
 # Name
-Datadown Parser
+md2data parser
 
 # Version
 1.0.0
@@ -45,7 +45,7 @@ true
 
     // Check "Name"
     assert_eq!(map[0].0, "Name");
-    assert_eq!(unwrap_string(&map[0].1), "Datadown Parser");
+    assert_eq!(unwrap_string(&map[0].1), "md2data parser");
 
     // Check "Version"
     assert_eq!(map[1].0, "Version");

@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use ::datadown::{convert_str, OutputFormat, ParsingMode};
+use ::md2data::{convert_str, OutputFormat, ParsingMode};
 
 #[pyfunction]
 fn convert(input: &str, format: &str) -> PyResult<String> {
@@ -11,7 +11,7 @@ fn convert(input: &str, format: &str) -> PyResult<String> {
 }
 
 #[pymodule]
-fn datadown(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn md2data(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(convert, m)?)?;
     Ok(())
 }
