@@ -1,20 +1,43 @@
 # Markdown &rarr; Structured Data
 
-## Description
-A high-performance tool that parses Markdown documents and converts them into structured data formats i.e., JSON/YAML/XML/TOML. Built with Rust for maximum speed and reliability, bindings for Node.js, Python provided with a standalone CLI.
+A high-performance tool that parses Markdown documents and converts them into structured data formats i.e., JSON, YAML, XML, or TOML. Built with Rust for maximum speed and reliability, bindings for Node.js, Python provided with a standalone CLI.
 
-## Features
+## How It Works
 
-- **Multiple Output Formats**: Convert Markdown to JSON, YAML, TOML, or XML
-- **Cross-Platform**: Available as a Rust CLI, Node.js package, and Python package
-- **High Performance**: Written in Rust with zero-cost abstractions
-- **Simple API**: Easy-to-use interface across Python, Node.js and Rust
-- **Structured AST**: Generates a clean Abstract Syntax Tree representation of your Markdown
+md2data works in three steps.
+
+```
+Markdown (input)
+   ↓
+Parser (Markdown → AST)
+   ↓
+Serializer (AST → JSON/YAML/TOML/XML)
+```
+
+Markdown is parsed into an [Abstract Syntax Tree (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree) using [`pulldown-cmark`](https://github.com/pulldown-cmark/pulldown-cmark), which is also a Rust-based CommonMark compliant parser. The AST is simply converted to your desired output format using [`serde`](https://github.com/serde-rs/serde).
+
+### Architecture
+
+The core parsing and serialization logic can be found in [`crates/md2data`](/crates/md2data/).
+
+The bindings for Python and Node.js are in [`bindings/python`](/bindings/python/) ([PyO3](https://github.com/PyO3/pyo3) & [maturin](https://github.com/PyO3/maturin)) and [`bindings/node`](/bindings/node/) ([napi-rs](https://napi.rs/)).
+
+### Features
+
+- **Multiple output formats**: Convert Markdown to JSON, YAML, TOML, or XML.
+- **High performance**: Written in Rust with zero-cost abstractions.
+- **Python and Node.js support**: Bindings available for Python and Node.js too.
+- **Structured Output**: Generates a clean data representation of your Markdown.
+
 
 ## Installation
 
-### CLI (Rust)
+Cargo
+```bash
+cargo install md2data
+```
 
+Manual installation for Rust
 ```bash
 # Build from source
 git clone https://github.com/yourusername/md2data.git
@@ -22,22 +45,19 @@ cd md2data
 cargo build --release
 ```
 
-### Node.js
-
+Node.js
 ```bash
 npm install md2data
 ```
 
-### Python
-
+Python
 ```bash
 pip install md2data
 ```
 
 ## Usage
 
-### Command Line
-
+Command line (only for cargo installation)
 ```bash
 # Convert to JSON (default)
 md2data input.md
@@ -54,8 +74,7 @@ echo "# Hello World" | md2data - --format json
 md2data input.md --format json -o output.json
 ```
 
-### Node.js
-
+Node.js
 ```javascript
 const { convert } = require('md2data');
 
@@ -73,8 +92,7 @@ const xml = convert(markdown, 'xml');
 console.log(json);
 ```
 
-### Python
-
+Python
 ```python
 from md2data import convert
 
@@ -91,104 +109,6 @@ xml_output = convert(markdown, 'xml')
 
 print(json_output)
 ```
-
-## Example
-
-
-
-## How It Works
-
-md2data uses a three-layer architecture:
-
-```
-Markdown (input)
-   ↓
-Parser (Markdown → AST)
-   ↓
-Serializer (AST → JSON/YAML/TOML/XML)
-```
-
-1. **Markdown Parsing**: Uses `pulldown-cmark`, a fast CommonMark-compliant parser
-2. **AST Generation**: Builds a structured Abstract Syntax Tree with typed nodes
-3. **Format Serialization**: Converts the AST to your desired output format using `serde`
-
-### Architecture
-
-- **Core Library** (`md2data`): Rust library with parsing and serialization logic
-- **Node.js Binding**: Native addon built with `napi-rs`
-- **Python Binding**: Native extension built with `PyO3` and `maturin`
-
-## Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| Language | Rust 1.91+ |
-| Markdown Parser | `pulldown-cmark` 0.10 |
-| Serialization | `serde` 1.x |
-| JSON Output | `serde_json` 1.x |
-| YAML Output | `serde_yaml` 0.9 |
-| TOML Output | `toml` 0.8 |
-| XML Output | `quick-xml` 0.36 |
-| CLI Framework | `clap` 4.x |
-| Node.js Binding | `napi-rs` 2.x |
-| Python Binding | `PyO3` + `maturin` |
-| Error Handling | `thiserror` 1.x |
-
-## Roadmap: Markdown Feature Support
-
-### Currently Supported ✅
-
-- [x] Headings (H1-H6)
-- [x] Paragraphs
-- [x] Text content
-- [x] Code blocks
-- [x] Lists (ordered and unordered)
-- [x] Nested lists
-- [x] List items
-- [x] Inline code
-- [x] Line breaks (soft and hard)
-
-### Inline Formatting (Text Preserved, Formatting Stripped) ⚠️
-
-- [x] Bold/Strong text (text content preserved)
-- [x] Italic/Emphasis text (text content preserved)
-- [x] Strikethrough (text content preserved)
-
-### Planned Features 🚧
-
-- [ ] Links (inline and reference-style)
-- [ ] Images
-- [ ] Block quotes
-- [ ] Horizontal rules
-- [ ] Tables
-- [ ] Task lists (GitHub Flavored Markdown)
-- [ ] Footnotes
-- [ ] Code block language detection
-- [ ] Preserve inline formatting in AST (not just text)
-- [ ] HTML passthrough
-- [ ] Definition lists
-
-### Future Enhancements 💡
-
-- [ ] Custom output format plugins
-- [ ] Configuration file support
-- [ ] Streaming API for large documents
-- [ ] Incremental parsing
-- [ ] Source position tracking
-- [ ] Schema validation
-- [ ] Pretty-printing options
-
-## AST Node Types
-
-The parser generates the following node types:
-
-- **Document**: Root container with children
-- **Heading**: Headers with level (1-6) and text content
-- **Paragraph**: Paragraph container with child nodes
-- **Text**: Plain text content
-- **CodeBlock**: Code blocks with optional language info
-- **List**: Ordered or unordered lists with items
-- **ListItem**: Individual list item with children
 
 ## Contributing
 

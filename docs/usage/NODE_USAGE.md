@@ -1,21 +1,17 @@
 # 📦 Node.js
 
-## Installation
-
+## Installation methods
 ```bash
-# Install from local package
+# 1. Install from local package
 cd bindings/node
 npm install
-
-# Link for local development
 npm link
 
-# Install from npm (after publishing)
+# 2. Install from npm
 npm install md2data
 ```
 
-## JavaScript (CommonJS) Usage
-
+## E.g., CommonJS basic usage
 ```js
 const { convert } = require('md2data');
 
@@ -42,8 +38,7 @@ console.log(xml);
 console.log(convert("# Quick Test", "json"));
 ```
 
-## TypeScript (ESM) Usage
-
+## E.g., TypeScript (ESM) usage
 ```ts
 import { convert } from 'md2data';
 
@@ -61,8 +56,7 @@ function convertMarkdown(md: string, format: "json" | "yaml" | "toml" | "xml"): 
 const result = convertMarkdown("# Test", "json");
 ```
 
-## Node.js - Reading from File
-
+## E.g., Reading from a file
 ```js
 const fs = require('fs');
 const { convert } = require('md2data');
@@ -78,8 +72,7 @@ fs.writeFileSync('output.json', json);
 console.log('Conversion complete!');
 ```
 
-## Node.js - Async/Promise Usage
-
+## E.g., Async/Promise usage
 ```js
 const fs = require('fs').promises;
 const { convert } = require('md2data');
@@ -105,8 +98,7 @@ async function convertFile(inputPath, outputPath, format) {
 convertFile('input.md', 'output.json', 'json');
 ```
 
-## Node.js - Stream Processing
-
+## E.g., Stream processing
 ```js
 const fs = require('fs');
 const { convert } = require('md2data');
@@ -125,8 +117,7 @@ fs.createReadStream('large-file.md', 'utf-8')
     });
 ```
 
-## Node.js - Express API Example
-
+## E.g., Express API example
 ```js
 const express = require('express');
 const { convert } = require('md2data');

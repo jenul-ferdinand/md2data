@@ -1,10 +1,8 @@
 # 🦀 Rust (via Cargo)
 
-This document outlines all usage examples for Rust development and production.
-
 ## A. As a CLI Tool
 
-### Installation
+### Installation methods
 ```bash
 # Install from local source
 cargo install --path crates/md2data
@@ -13,7 +11,7 @@ cargo install --path crates/md2data
 cargo install md2data
 ```
 
-### Command-Line Usage
+### Command-Line usage
 ```bash
 # From a file → stdout (JSON default)
 md2data input.md
@@ -38,7 +36,7 @@ md2data --version
 md2data --help
 ```
 
-### Development (without installing):
+### Development (without installing)
 ```bash
 # Run directly from source
 cargo run --package md2data -- input.md --format json

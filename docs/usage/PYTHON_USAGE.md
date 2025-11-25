@@ -1,24 +1,23 @@
 # 🐍 Python
 
-This document outlines all usage examples for Python development and production.
-
-## Installation
+## Installation methods
 ```bash
-# Install from local wheel
+# 1. Install from local wheel
 pip install bindings/python/dist/md2data-0.1.0-cp314-cp314-win_amd64.whl
 
-# Install from PyPI
+# 2. Install from PyPI
 pip install md2data
 
-# Install with uv
+# 3. Install with uv
 uv pip install md2data
-# Add to pyproject with uv
+
+# 4. Add to pyproject with uv
 uv add md2data
 ```
 
 ---
 
-## Python Usage
+## E.g., Basic usage
 
 ```py
 import md2data
@@ -46,7 +45,7 @@ print(xml_output)
 print(md2data.convert("# Quick Test", "json"))
 ```
 
-## Python - Reading from File
+## E.g., Reading from a file
 
 ```py
 import md2data
@@ -61,7 +60,7 @@ with open("output.json", "w", encoding="utf-8") as f:
     f.write(json_output)
 ```
 
-## Python - Error Handling
+## E.g., Error handling
 
 ```py
 import md2data
