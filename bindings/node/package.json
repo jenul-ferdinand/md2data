@@ -7,9 +7,10 @@
     "scripts": {
         "build": "napi build --release",
         "dev": "napi build",
-        "test": "node -e \"const m=require('./index'); console.log(m.convert('# T','json'))\""
+        "test": "jest"
     },
     "devDependencies": {
-        "@napi-rs/cli": "^3.4.1"
+        "@napi-rs/cli": "^3.4.1",
+        "jest": "^30.2.0"
     }
 }
