@@ -1,5 +1,5 @@
 [build-system]
-requires = ["maturin>=1.5,<2.0"]
+requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 
 [project]
@@ -7,17 +7,33 @@ name = "md2data"
 version = "0.1.0"
 description = "Python binding for md2data: Markdown → JSON/YAML/TOML/XML. Faster with Rust."
 readme = "README.md"
-requires-python = ">=3.9"
-authors = [{ name = "Jenul Ferdinand", email = "jenul15ferdinand@gmail.comm" }]
+requires-python = ">=3.12.3"
+authors = [{ name = "Jenul Ferdinand", email = "jenul15ferdinand@gmail.com" }]
 license = { text = "MIT" }
 classifiers = [
+  "Development Status :: 5 - Production Stable",
   "Programming Language :: Rust",
-  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
   "Operating System :: Microsoft :: Windows",
   "Operating System :: POSIX :: Linux",
   "Operating System :: MacOS",
+  "Operating System :: OS Independent",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Text Processing :: Markdown",
+  "Topic :: File Formats",
+  "Topic :: Utilities",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=9.0.1",
 ]
 
 [tool.maturin]
 module-name = "md2data"
 strip = true
+
+[tool.pytest.ini_options]
+testpaths = [
+  "it",
+]

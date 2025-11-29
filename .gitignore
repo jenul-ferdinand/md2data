@@ -9,3 +9,8 @@
 # Generated bindings
 /bindings/node/index.node
 /bindings/node/index.d.ts
+/bindings/python/dist/
+
+# Caches
+/bindings/python/.pytest_cache
+__pycache__
