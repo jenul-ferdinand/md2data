@@ -58,6 +58,7 @@ pub fn convert_str(input: &str, fmt: OutputFormat, mode: ParsingMode) -> Result<
         ParsingMode::Minified => {
             let mut ast = parse_markdown_minified(input);
 
+            #[cfg(feature = "xml")]
             if let OutputFormat::Xml = fmt {
                 // Sanitize XML keys
                 ast = sanitize_keys(ast);
@@ -66,6 +67,11 @@ pub fn convert_str(input: &str, fmt: OutputFormat, mode: ParsingMode) -> Result<
                 let wrapper = XmlRoot(&ast);
                 return quick_xml::se::to_string(&wrapper)
                     .map_err(|e| ConvertError::Ser(e.to_string()));
+            }
+
+            #[cfg(not(feature = "xml"))]
+            if let OutputFormat::Xml = fmt {
+                return Err(ConvertError::UnsupportedFormat);
             }
 
             serialize_ast(&ast, fmt)
