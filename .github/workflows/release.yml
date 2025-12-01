@@ -48,20 +48,21 @@ jobs:
         id: tag_msg
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         run: |
-          # 1. Verify if it is an annotated tag object
-          # "tag" = annotated, "commit" = lightweight
-          TAG_TYPE=$(git cat-file -t ${{ github.ref_name }})
-          echo "Tag type: $TAG_TYPE"
+          # 1. Force fetch tags to ensure annotations are present
+          git fetch --tags --force
           
-          if [ "$TAG_TYPE" == "tag" ]; then
-            # It is an annotated tag, safe to extract the message
-            TAG_MSG=$(git tag -l --format='%(contents:subject)' ${{ github.ref_name }})
+          # 2. Use for-each-ref to extract the annotation subject safely
+          # refs/tags/${{ github.ref_name }} ensures we target exactly the tag triggering the run
+          TAG_MSG=$(git for-each-ref refs/tags/${{ github.ref_name }} --format='%(contents:subject)')
+          
+          echo "Debug: Tag Ref: ${{ github.ref_name }}"
+          echo "Debug: Extracted Message: '$TAG_MSG'"
+          
+          if [ -n "$TAG_MSG" ]; then
             echo "msg=$TAG_MSG" >> $GITHUB_OUTPUT
-            echo "Found tag message: $TAG_MSG"
           else
-            # It is lightweight (or other), ignore to avoid using commit message
             echo "msg=" >> $GITHUB_OUTPUT
-            echo "Lightweight tag detected. Skipping message extraction."
+            echo "::warning::No tag message found. Did you use 'git tag -a'?"
           fi
 
       - name: Verify version consistency
