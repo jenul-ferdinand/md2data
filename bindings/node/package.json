@@ -4,6 +4,11 @@
     "description": "Node binding for md2data: Markdown → JSON/YAML/TOML/XML. Faster with Rust.",
     "license": "MIT",
     "main": "index.js",
+    "files": [
+        "index.js",
+        "*.node",
+        "README.md"
+    ],
     "scripts": {
         "build": "napi build --release",
         "dev": "napi build",
