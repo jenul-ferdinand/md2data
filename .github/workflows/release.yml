@@ -44,6 +44,23 @@ jobs:
             echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
           fi
 
+      - name: Get tag message
+        id: tag_msg
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          # Extract the tag subject (the -m message)
+          # %(contents:subject) grabs the first line of the annotation
+          TAG_MSG=$(git tag -l --format='%(contents:subject)' ${{ github.ref_name }})
+          
+          # Handle empty messages safely
+          if [ -n "$TAG_MSG" ]; then
+            echo "msg=$TAG_MSG" >> $GITHUB_OUTPUT
+            echo "Found tag message: $TAG_MSG"
+          else
+            echo "msg=" >> $GITHUB_OUTPUT
+            echo "No tag message found"
+          fi
+
       - name: Verify version consistency
         run: |
           TAG_VERSION="${{ steps.get_version.outputs.version }}"
@@ -81,7 +98,9 @@ jobs:
           else
             raw_log=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
           fi
+          # Filter out chore/merge/ci commits for cleaner log
           CLEAN_LOG=$(echo "$raw_log" | grep -viE "^- (chore|merge|ci)(\([^)]+\))?:")
+          
           cat > changelog.txt <<EOF
           ## What's Changed
           $CLEAN_LOG
@@ -96,6 +115,7 @@ jobs:
 
           Verify checksums with \`SHA256SUMS.txt\`.
           EOF
+          
           EOF_DELIMITER=$(openssl rand -hex 8)
           echo "changelog<<$EOF_DELIMITER" >> $GITHUB_OUTPUT
           cat changelog.txt >> $GITHUB_OUTPUT
@@ -109,7 +129,7 @@ jobs:
         with:
           tag_name: ${{ github.event_name == 'workflow_dispatch' && format('v{0}', inputs.version) || github.ref_name }}
           target_commitish: ${{ github.sha }}
-          name: v${{ steps.get_version.outputs.version }}
+          name: v${{ steps.get_version.outputs.version }}${{ steps.tag_msg.outputs.msg != '' && format(' - {0}', steps.tag_msg.outputs.msg) || '' }}
           body: ${{ steps.changelog.outputs.changelog }}
           draft: true
           prerelease: ${{ contains(steps.get_version.outputs.version, '-') }}
