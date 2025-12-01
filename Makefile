@@ -1,53 +1,66 @@
-# ----------------------------- Primary workflow ----------------------------- #
+.PHONY: sync build test build-rust test-rust test-parsing sync-python build-python test-python sync-node build-node test-node
 
-# Installs deps for the two bindings
-sync: sync-python sync-node
-# Builds everything, including the bindings
-build: build-rust build-python build-node
-# Tests everything
-test: test-rust test-python test-node
 
-# ---------------------------- The project itself ---------------------------- #
+##@ ----------------------------- Primary workflow -----------------------------
 
-# Builds the project as release
-build-rust:
+sync: sync-python sync-node ## Installs deps for the two bindings
+ 
+build: build-rust build-python build-node ## Builds everything, including the bindings
+
+test: test-rust test-python test-node ## Tests everything
+
+
+##@ ---------------------------- The project itself ----------------------------
+
+build-rust: ## Builds the project as release
 	@echo "\n\n🧱 Running release build process for md2data\n\n"
 	cargo build --release
-# Tests all components of the rust project
-test-rust: test-parsing
-# Tests the parsers
-test-parsing:
+
+test-rust: test-parsing test-formatting ## Tests all components of the rust project
+
+test-parsing: ## Tests the parsers
 	@echo "\n\n🧪 Testing structured parser\n\n"
 	cargo test --test parser
-	@echo "\n\n🧪 Testing minified parser\n\n"
+	@echo "\n\n🧪 Testing minified parser (default)\n\n"
 	cargo test --test parser_minified
 
-# ------------------------------ Python binding ------------------------------ #
+test-formatting: ## Tests the formatting
+	@echo "\n\nTried to test formatting, not implemented yet\n\n"
 
-# Installs deps
-sync-python:
+
+##@ ------------------------------ Python binding ------------------------------
+
+sync-python: ## Installs deps
 	@echo "\n\n📥 Installing python binding's dependencies...\n\n"
 	cd bindings/python && uv sync --all-extras
-# Builds the binding
-build-python:
+
+build-python: ## Builds the binding
 	@echo "\n\n🧱 Building python binding...\n\n"
 	cd bindings/python && uv build
-# Runs integration tests
-test-python:
+
+test-python: ## Runs integration tests
 	@echo "\n\n🧪 Testing python binding...\n\n"
 	cd bindings/python && uv run pytest
 
-# ------------------------------- Node binding ------------------------------- #
 
-# Installs deps
-sync-node:
+##@ ------------------------------- Node binding -------------------------------
+
+sync-node: ## Installs deps
 	@echo "\n\n📥 Installing node binding's dependencies...\n\n"
 	cd bindings/node && npm install
-# Builds the binding
-build-node:
+
+build-node: ## Builds the binding
 	@echo "\n\n🧱 Building node binding...\n\n"
 	cd bindings/node && npm run build
-# Runs integration tests
-test-node:
+
+test-node: ## Runs integration tests
 	@echo "\n\n🧪 Testing node binding...\n\n"
 	cd bindings/node && npm test
+
+
+##@ ----------------------------------- Help -----------------------------------
+
+help: ## Display this help message
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:$(NC)\n  make <target>$(NC)\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  %-20s$(NC) %s\n", $$1, $$2 } /^##@/ { printf "\n%s$(NC)\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+.DEFAULT_GOAL := help
