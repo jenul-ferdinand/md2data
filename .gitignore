@@ -8,6 +8,7 @@
 
 # Generated bindings
 /bindings/node/index.node
+/bindings/node/*.node
 /bindings/node/index.d.ts
 /bindings/python/dist/
 
