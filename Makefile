@@ -51,7 +51,30 @@ sync-node: ## Installs deps
 
 build-node: ## Builds the binding
 	@echo "\n\n🧱 Building node binding...\n\n"
-	cd bindings/node && npm run build
+	@# Detect platform and architecture
+	@PLATFORM=$$(uname -s | tr '[:upper:]' '[:lower:]'); \
+	ARCH=$$(uname -m); \
+	if [ "$$PLATFORM" = "linux" ]; then \
+		TARGET="x86_64-unknown-linux-gnu"; \
+	elif [ "$$PLATFORM" = "darwin" ]; then \
+		if [ "$$ARCH" = "arm64" ]; then \
+			TARGET="aarch64-apple-darwin"; \
+		else \
+			TARGET="x86_64-apple-darwin"; \
+		fi; \
+	else \
+		echo "Unsupported platform: $$PLATFORM"; \
+		exit 1; \
+	fi; \
+	echo "Building for target: $$TARGET"; \
+	cd bindings/node && npm run build -- --target $$TARGET && \
+	if [ -f "index.node" ]; then \
+		mv index.node "index.$$TARGET.node"; \
+		echo "✅ Created index.$$TARGET.node"; \
+	else \
+		echo "⚠️  index.node not found, checking for platform-specific binary..."; \
+		ls -la index.*.node 2>/dev/null || echo "No .node files found"; \
+	fi
 
 test-node: ## Runs integration tests
 	@echo "\n\n🧪 Testing node binding...\n\n"
