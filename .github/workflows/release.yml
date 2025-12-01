@@ -102,8 +102,12 @@ jobs:
           else
             raw_log=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
           fi
-          # Filter out chore/merge/ci commits for cleaner log
-          CLEAN_LOG=$(echo "$raw_log" | grep -viE "^- (chore|merge|ci)(\([^)]+\))?:")
+          
+          CLEAN_LOG=$(echo "$raw_log" | grep -viE "^- (chore|merge|ci)(\([^)]+\))?:" || true)
+          
+          if [ -z "$CLEAN_LOG" ]; then
+            CLEAN_LOG="- Maintenance and dependencies updates"
+          fi
           
           cat > changelog.txt <<EOF
           ## What's Changed
