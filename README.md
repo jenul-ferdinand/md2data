@@ -4,7 +4,7 @@
   <img width="300px" alt="MD2Data Logo" src="docs/assets/logo.png" />
 </p>
 
-A high-performance tool that parses Markdown documents and converts them into structured data formats i.e., JSON, YAML, XML, or TOML. Built with Rust for maximum speed and reliability, additional bindings for Node.js and Python provided with a standalone CLI for Cargo.
+A high-performance tool that parses Markdown documents and converts them into structured data formats i.e., JSON, YAML, XML, or TOML. Built with Rust for maximum speed and reliability, with bindings for Node.js and Python. Available as both a Rust library and CLI tool.
 
 ## How It Works
 
@@ -60,7 +60,19 @@ pip install md2data
 
 ## Usage
 
-Command line (only for cargo installation)
+Rust Library
+```rust
+use md2data::{convert_str, OutputFormat, ParsingMode};
+
+let markdown = r#"# Hello World
+
+This is a **markdown** document."#;
+
+let json = convert_str(markdown, OutputFormat::Json, ParsingMode::Minified).unwrap();
+let yaml = convert_str(markdown, OutputFormat::Yaml, ParsingMode::Minified).unwrap();
+```
+
+Command Line
 ```bash
 # Convert to JSON (default)
 md2data input.md
