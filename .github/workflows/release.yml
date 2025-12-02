@@ -396,7 +396,6 @@ jobs:
           merge-multiple: true
 
       # Move artifacts to where npm publish expects them
-      # (Adjust this move command based on your package structure!)
       - name: Move artifacts
         working-directory: bindings/node
         run: |

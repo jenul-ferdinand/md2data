@@ -1,34 +1,6 @@
-type: Document
-children:
-- type: Heading
-  level: 1
-  text: Description
-- type: Paragraph
-  children:
-  - type: Text
-    content: This is an example file
-- type: Heading
-  level: 1
-  text: Authors
-- type: List
-  ordered: false
-  items:
-  - type: ListItem
-    children:
-    - type: Text
-      content: Jenul Ferdinand
-  - type: ListItem
-    children:
-    - type: Text
-      content: Foo
-    - type: List
-      ordered: false
-      items:
-      - type: ListItem
-        children:
-        - type: Text
-          content: Bar1
-      - type: ListItem
-        children:
-        - type: Text
-          content: Bar2
+Description: This is an example file
+Authors:
+- Jenul Ferdinand
+- Foo
+- - Bar1
+  - Bar2

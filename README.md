@@ -34,7 +34,9 @@ The bindings for Python and Node.js are in [`bindings/python`](/bindings/python/
 - **Structured Output**: Generates a clean data representation of your Markdown.
 
 
-## Installation
+## Getting Started
+
+### Installation
 
 📦 Cargo
 ```bash
@@ -58,9 +60,11 @@ npm install md2data
 pip install md2data
 ```
 
-## Usage
+### Usage
 
-Rust Library
+<details>
+<summary><strong>As a rust library</strong></summary>
+
 ```rust
 use md2data::{convert_str, OutputFormat, ParsingMode};
 
@@ -72,7 +76,11 @@ let json = convert_str(markdown, OutputFormat::Json, ParsingMode::Minified).unwr
 let yaml = convert_str(markdown, OutputFormat::Yaml, ParsingMode::Minified).unwrap();
 ```
 
-Command Line
+</details>
+
+<details>
+<summary><strong>In the command line</strong></summary>
+
 ```bash
 # Convert to JSON (default)
 md2data input.md
@@ -89,7 +97,11 @@ echo "# Hello World" | md2data - --format json
 md2data input.md --format json -o output.json
 ```
 
-Node.js
+</details>
+
+<details>
+<summary><strong>In a node.js script</strong></summary>
+
 ```javascript
 const { convert } = require('md2data');
 
@@ -107,7 +119,11 @@ const xml = convert(markdown, 'xml');
 console.log(json);
 ```
 
-Python
+</details>
+
+<details>
+<summary><strong>In a python script</strong></summary>
+
 ```python
 from md2data import convert
 
@@ -124,6 +140,11 @@ xml_output = convert(markdown, 'xml')
 
 print(json_output)
 ```
+
+</details>
+
+### Output Examples
+See [docs/examples](https://github.com/jenul-ferdinand/md2data/tree/main/docs/examples) for example outputs.
 
 ## Contributing
 

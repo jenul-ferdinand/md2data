@@ -1,54 +1,9 @@
-type = "Document"
-
-[[children]]
-type = "Heading"
-level = 1
-text = "Description"
-
-[[children]]
-type = "Paragraph"
-
-[[children.children]]
-type = "Text"
-content = "This is an example file"
-
-[[children]]
-type = "Heading"
-level = 1
-text = "Authors"
-
-[[children]]
-type = "List"
-ordered = false
-
-[[children.items]]
-type = "ListItem"
-
-[[children.items.children]]
-type = "Text"
-content = "Jenul Ferdinand"
-
-[[children.items]]
-type = "ListItem"
-
-[[children.items.children]]
-type = "Text"
-content = "Foo"
-
-[[children.items.children]]
-type = "List"
-ordered = false
-
-[[children.items.children.items]]
-type = "ListItem"
-
-[[children.items.children.items.children]]
-type = "Text"
-content = "Bar1"
-
-[[children.items.children.items]]
-type = "ListItem"
-
-[[children.items.children.items.children]]
-type = "Text"
-content = "Bar2"
+Description = "This is an example file"
+Authors = [
+    "Jenul Ferdinand",
+    "Foo",
+    [
+    "Bar1",
+    "Bar2",
+],
+]
